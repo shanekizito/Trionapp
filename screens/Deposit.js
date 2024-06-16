@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { IconComponentProvider, Icon } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import HomeHeaderWhite from "../components/HomeHeaderWhite";
 
 const IMG =
   "https://cdn.uc.assets.prezly.com/8f4a921a-814e-4032-9b87-77ff8e40323c/-/preview/1200x1200/-/format/auto/";
@@ -30,34 +31,38 @@ const Deposit = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require("../assets/images/background.jpg")}
-        style={styles.imageBackground}
-      >
+    <ImageBackground
+      source={require("../assets/images/background.jpg")}
+      style={styles.imageBackground}
+    >
+       <HomeHeaderWhite navigation={navigation} header={'Buy Page'} />
+      <SafeAreaView style={styles.container}>
+       
+
         {/* Overlay View */}
         <View style={styles.overlay} />
 
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/images/mainlogo.png")}
-            style={styles.logo}
-          />
+        <View style={styles.content}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("../assets/images/mainlogo.png")}
+              style={styles.logo}
+            />
+          </View>
+          <Text style={styles.description}>TRION ENERGY</Text>
+          <View style={styles.detailContainer}>
+            <Text style={styles.detail}>Calculate your footprint</Text>
+          </View>
+          <CloseAppButton />
         </View>
-        <Text style={styles.description}>TRION ENERGY</Text>
-        <View style={styles.detailContainer}>
-          <Text style={styles.detail}>Calculate your footprint</Text>
-        </View>
-        <CloseAppButton />
-      </ImageBackground>
-    </SafeAreaView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2E8B57", // SeaGreen
   },
   imageBackground: {
     flex: 1,
@@ -66,7 +71,13 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.2)", // Semi-transparent black overlay
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  content: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   logoContainer: {
     flexDirection: "row",

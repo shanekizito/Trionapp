@@ -67,11 +67,11 @@ const ChatScreen = ({ navigation }) => {
                 textStyle={{
                   right: {
                     color: 'black',
-                    fontFamily: 'RalewayRegular',
+                    fontFamily: 'sans-serif',
                   },
                   left: {
                     color: 'white',
-                    fontFamily: 'RalewayRegular',
+                    fontFamily: 'sans-serif',
                   },
                 }}
                 wrapperStyle={{

@@ -29,7 +29,7 @@ const Onboarding = ({ navigation }) => {
   const CloseAppButton = ({ title }) => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("Details");
+        navigation.navigate("SignIn");
       }}
       style={styles.ProceedBtn}
     >

@@ -8,18 +8,23 @@ import {
   TextInput,
 } from "react-native";
 import CountryPicker, { CountryModalProvider } from "react-native-country-picker-modal";
+import HomeHeaderWhite from "../components/HomeHeaderWhite"; // Import HomeHeaderWhite component
 
 const Card = ({ navigation }) => {
   const [countryCode, setCountryCode] = useState("US");
   const [countryName, setCountryName] = useState("United States");
 
   const handleConfirm = () => {
-   navigation.navigate("Buy", { countryCode, countryName });
+    navigation.navigate("Buy", { countryCode, countryName });
   };
 
   return (
+    <View style={styles.container}>
+       <HomeHeaderWhite navigation={navigation} header={''} />
+   
     <CountryModalProvider>
-      <View style={styles.container}>
+      {/* Use HomeHeaderWhite component for header */}
+     <View style={styles.card}>
         <Text style={styles.label}>Please confirm your country of residence</Text>
 
         <View style={styles.pickerContainer}>
@@ -65,26 +70,31 @@ const Card = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={handleConfirm}>
           <Text style={styles.buttonText}>Confirm</Text>
         </TouchableOpacity>
-      </View>
+        </View>
     </CountryModalProvider>
+     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
+   
   },
   label: {
     fontSize: 25,
-    marginBottom: 50,
+    marginBottom: 100,
     textAlign: "center",
     color: "#000",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
+  },
+  card:{
+    flex: 1,
+    padding:10,
+    marginBottom:80,
+    justifyContent: "center",
+    alignItems: "center",
   },
   pickerContainer: {
     borderWidth: 1,
@@ -111,10 +121,10 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size for better visibility
     color: "#000",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   button: {
-    backgroundColor: "#3CB371", // MediumSeaGreen
+    backgroundColor: '#2ecc71', 
     borderRadius: 10, // Matching input field border radius
     width: '90%', // Matching input field width
     padding: 15, // Matching input field padding
@@ -126,7 +136,7 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size for better visibility
     color: "#fff",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     
   },
   filterContainer: {
@@ -143,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size for better visibility
     color: "black",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   filterInput: {
     flex: 1,

@@ -13,6 +13,7 @@ import Venue from "./screens/Venue";
 import Preferences from "./screens/Preferences";
 import Notification from './screens/Notification';
 import SignUp from './screens/SignUp';
+import Diet from './screens/Diet';
 import Map from './screens/Map';
 import Buy from './screens/Buy';
 import Deposit from './screens/Deposit';
@@ -30,6 +31,7 @@ import { auth } from './config/firebase';
 import { storage } from './config/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import React, { useState, useEffect } from "react";
+import { mdiUbuntu } from '@mdi/js';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,6 +80,7 @@ const App = () => {
         initialRouteName="Onboarding"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Diet' component={Diet} />
         <Stack.Screen name='Venue' component={Venue} />
         <Stack.Screen name='Buy' component={Buy} />
         <Stack.Screen name='SignUp' component={SignUp} />
@@ -97,6 +100,8 @@ const App = () => {
   const [loaded] = useFonts({
     RalewayRegular: require('./assets/fonts/Raleway-Regular.ttf'),
     RalewayBold: require('./assets/fonts/Raleway-Bold.ttf'),
+    UbuntuBold: require('./assets/fonts/Ubuntu-Bold.ttf'),
+    Ubuntu: require('./assets/fonts/Ubuntu-Light.ttf')
   });
 
   if (!loaded) {

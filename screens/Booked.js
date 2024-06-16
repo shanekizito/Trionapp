@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize:17,
     marginTop:20,
     padding:10,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     width:"80%"
 },
   

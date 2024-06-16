@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
       marginTop:20,
       padding:10,
 
-      fontFamily: 'RalewayRegular',
+      fontFamily: 'sans-serif',
       width:"80%"
 
 
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
    marginLeft:25,
    color:'#afafaf',
    fontSize:15,
-   fontFamily: 'RalewayRegular',
+   fontFamily: 'sans-serif',
    flexDirection:'row',
    justifyContent:'flex-start',
    alignItems:'center'

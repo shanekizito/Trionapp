@@ -1,122 +1,63 @@
 import React from "react";
-import { View, Text, Image, TextInput,Button,TouchableOpacity,StatusBar,StyleSheet } from "react-native";
-import { COLORS, FONTS, SIZES, assets } from "../constants";
+import { View, Text, TouchableOpacity, StatusBar, StyleSheet } from "react-native";
 import { IconComponentProvider, Icon } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {  FocusedStatusBar } from "../components";
-import  {StatusBarStyle} from 'react-native';
 import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.8 };
 
-
-
-
-
-
-
 const styles = StyleSheet.create({
-  screenContainer: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 16
-  },
-  homeHeaderWhiteContainer :{
+  homeHeaderContainer: {
     width: '100%',
     flexDirection: 'row',
-    alignItems:'center',
-    backgroundColor: '#ffff',
-    height:65,
-    elevation:2,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    marginTop: 30,
+    height: 65,
+    elevation: 2,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
-  Header:{
- fontFamily: 'RalewayBold',
- fontSize:15,
- position:'absolute',
- marginLeft:120,
- color:'#363636'
-  },
-
-  appButtonContainer: {
-   
-    position:'absolute',
-   
-    alignItems:"center",
-    justifyContent:"center",
-    color:'#363636',
-    
-    marginLeft: 300,
-     
-    
-    
-    alignItems:'center',
-    justifyContent:'center',
-
-    
-    width:40,
-    height:40
-  },
-  appButtonText: {
+  headerText: {
+    fontFamily: 'RalewayBold',
     fontSize: 18,
-    color: "#5c5c5c",
-    alignSelf: "center",
+    color: '#363636',
+    textAlign: 'center',
+    flex: 1,
   },
-  BackButtonContainer:{
-    borderRadius:200,
-    alignItems:'center',
-    justifyContent:'center',
-    marginLeft:10,
-    
+  backButtonContainer: {
+    borderRadius: 50,
+    backgroundColor: 'transparent', // Transparent background
+    marginLeft: 5,
+  },
+  iconStyle: {
+    fontSize: 40,
+    marginLeft: 0,
+    color: '#ffff', // MediumSeaGreen
   },
 });
 
+const HomeHeaderWhite = ({ header, navigation }) => {
+  const { dismissAll } = useBottomSheetModal();
 
-
-
-const HomeHeaderWhite = ({ header,navigation  }) => {
-  const { dismiss, dismissAll } = useBottomSheetModal();
-
-
-
-  const NotificationButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={()=>{ navigation.navigate('Details', { name: 'Jane' })}} style={styles.appButtonContainer}>
-      <Image style={{width:30,height:35}} 
-      source={{ uri:"https://img.icons8.com/fluency/48/000000/fire-element.png" }} 
-      />
-     
-    </TouchableOpacity>
-  );
-  
-  
   const BackButton = () => (
-     
-    <TouchableOpacity style={styles.BackButtonContainer} onPress={() =>{
-      dismissAll()
-      return navigation.goBack()
-    }
-    
-    } >
-      <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-        <Icon name="arrow-left" size={30} color="#424242"/>
-      </IconComponentProvider>
+    <TouchableOpacity
+      style={styles.backButtonContainer}
+      onPress={() => {
+        dismissAll();
+        navigation.goBack();
+      }}
+    >
+      <MaterialCommunityIcons name="arrow-left-circle" style={styles.iconStyle} />
     </TouchableOpacity>
-     
   );
 
   return (
-    
-       
-        <View style={styles.homeHeaderWhiteContainer}>
-         <StatusBar hidden />
-          <BackButton/>
-         
-          <Text style={styles.Header}>{header}</Text>
-        </View>
-       
-       
-      
+    <View style={styles.homeHeaderContainer}>
+      <StatusBar hidden />
+      <BackButton />
+      <Text style={styles.headerText}>{header}</Text>
+    </View>
   );
 };
 

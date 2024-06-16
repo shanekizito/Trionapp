@@ -370,13 +370,13 @@ const styles = StyleSheet.create({
     lineHeight:25,
     fontSize:15,
     marginLeft:20,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     color:'#fff',
     marginBottom:15,
     
   },
   date:{
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     fontSize:12,
     color:'grey',
      justifyContent:'flex-start',
@@ -407,12 +407,12 @@ fontFamily: 'RalewayRegular',
     alignItems:'center',
     flexDirection:'row',
     color:'#fff',
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
 
   area:{
     fontSize:22,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     marginLeft:20,
     fontWeight:'600',
     marginTop:30,
@@ -423,7 +423,7 @@ fontFamily: 'RalewayRegular',
   road:{
     fontSize:10,
     textAlign:'center',
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     marginTop:20,
     alignSelf:'stretch',
   },CloseappButtonContainer: {
@@ -457,7 +457,7 @@ fontFamily: 'RalewayRegular',
   },
   appButtonText: {
     fontSize: 17,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     color: "#000",
     alignSelf: "center",
     flexDirection:"row",
@@ -569,7 +569,7 @@ venueName: {
 },
 venueLocation: {
     fontSize:12,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
 },
 });
 export default Map;

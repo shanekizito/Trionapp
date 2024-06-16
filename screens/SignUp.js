@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     color: 'black',
     fontSize: 16, // Increased font size for better visibility
   },
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     color: 'black',
   },
   eyeIconContainer: {
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
   passwordStrengthLabel: {
     fontSize: 12,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   appButtonContainer: {
     backgroundColor: "#3CB371", // MediumSeaGreen
@@ -233,13 +233,13 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size for better visibility
     color: "#fff",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   registerLink: {
     marginTop: 20,
     color: '#afafaf',
     fontSize: 15,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

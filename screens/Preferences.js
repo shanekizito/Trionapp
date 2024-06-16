@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
      color:'#ffff',
      fontWeight: '800',
      textAlign:'center',
-     fontFamily: 'RalewayRegular',
+     fontFamily: 'sans-serif',
      minWidth:90,
      borderRadius:10,
      backgroundColor:"rgba(24,24,24,0.4)",

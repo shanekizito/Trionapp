@@ -34,7 +34,7 @@ const SignIn = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
-      <HomeHeaderWhite navigation={navigation} header={'SIGN IN'} />
+      <HomeHeaderWhite navigation={navigation} header={''} />
       <View style={styles.form}>
         <View style={styles.welcomeContainer}>
           <Text style={styles.text}>Welcome back</Text>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     color: 'black',
     fontSize: 16, // Increased font size for better visibility
   },
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size for better visibility
     color: "#fff",
     alignSelf: "center",
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   registerLink: {
     marginTop: 20,
     color: '#afafaf',
     fontSize: 15,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   continueWithText: {
     color: '#929292',
     fontSize: 16,
-    fontFamily: 'RalewayRegular',
+    fontFamily: 'sans-serif',
   },
   socialButtonsContainer: {
     flexDirection: 'row',
