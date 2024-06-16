@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -7,21 +7,21 @@ import { IconComponentProvider, Icon } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 // Import images statically
-import plane1 from '../assets/images/plane1.png';
-import plane2 from '../assets/images/plane2.png';
-import plane3 from '../assets/images/plane3.png';
-import plane4 from '../assets/images/plane4.png';
+import veganImg from '../assets/images/vegan.png';
+import vegetarianImg from '../assets/images/vegeterian.png';
+import lessMeatImg from '../assets/images/meat.png';
+import everythingImg from '../assets/images/noodles.png';
 
 const carbonFootprints = {
-  Rarely: 0.1,
-  Occasionally: 0.3,
-  Regularly: 0.5,
-  Custom: 1.0,
+  Vegan: 1.5,
+  Vegeterian: 2.0,
+  lessMeat: 3.0,
+  everything: 4.0,
 };
 
-const totalAnnualFootprint = 1.74; // Total carbon footprint for the country
+const totalAnnualFootprint = 10; // Adjust this value based on the maximum possible footprint
 
-const Venue = ({ navigation }) => {
+const Diet = ({ navigation }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [footprint, setFootprint] = useState(0);
 
@@ -36,28 +36,28 @@ const Venue = ({ navigation }) => {
   };
 
   const handleProceed = () => {
-    navigation.navigate('Diet'); // Replace 'NextScreen' with your actual screen name
+    navigation.navigate('Diet'); // Replace 'Diet' with your actual next screen name
   };
 
   const calculateFill = () => (footprint / totalAnnualFootprint) * 100;
 
   const getImageSource = (option) => {
     switch (option) {
-      case 'Rarely':
-        return plane1;
-      case 'Occasionally':
-        return plane2;
-      case 'Regularly':
-        return plane3;
-      case 'Custom':
-        return plane4;
+      case 'Vegan':
+        return veganImg;
+      case 'Vegeterian':
+        return vegetarianImg;
+      case 'lessMeat':
+        return lessMeatImg;
+      case 'everything':
+        return everythingImg;
       default:
         return null;
     }
   };
 
   return (
-    <ImageBackground source={require('../assets/images/plane.jpg')} style={styles.backgroundImage}>
+    <ImageBackground source={require('../assets/images/food.jpg')} style={styles.backgroundImage}>
       <View style={styles.overlay}>
         <HomeHeaderWhite navigation={navigation} header={''} />
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -76,7 +76,7 @@ const Venue = ({ navigation }) => {
               {
                 () => (
                   <Text style={styles.circularProgressText}>
-                    {((footprint / totalAnnualFootprint) * 100).toFixed(2)}%
+                    {footprint.toFixed(1)} T
                   </Text>
                 )
               }
@@ -85,7 +85,7 @@ const Venue = ({ navigation }) => {
 
           {/* Question Chat Bubble */}
           <View style={[styles.chatBubble, styles.leftChatBubble]}>
-            <Text style={styles.chatText}>How would you describe your flying habits in a typical average year?</Text>
+            <Text style={styles.chatText}>Which best describes your diet?</Text>
           </View>
           
           {/* Reply Chat Bubble */}
@@ -214,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Venue;
+export default Diet;
