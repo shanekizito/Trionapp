@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
   proceedBtn: {
     elevation: 8,
-    backgroundColor: "#3CB371", // MediumSeaGreen
+    backgroundColor: "#2ecc71", // MediumSeaGreen
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

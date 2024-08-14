@@ -1,26 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
 import { FocusedStatusBar, HomeHeaderWhite } from "../components";
 import { COLORS } from "../constants";
-import { signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithCredential } from "firebase/auth";
 import { auth } from '../config/firebase';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 // Import logo images
 import GoogleLogo from '../assets/google-logo.png';
 import FacebookLogo from '../assets/facebook-logo.png';
 import TwitterLogo from '../assets/twitter.png';
-import HelloLogo from '../assets/images/hello.png'; // Import hello image
+import HelloLogo from '../assets/images/hello.png';
 
 const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '596897853249-4qnna0rccca63m6pcumae75jh8mmulbu.apps.googleusercontent.com',
+    });
+  }, []);
+
   const handleSignIn = async () => {
-    // Your existing code for email/password sign in
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      console.log('User signed in with UID:', user.uid);
+      navigation.navigate('MainMenu', { person: user });
+    } catch (error) {
+      console.log('Error signing in:', error.message);
+      Alert.alert('Sign In Error', error.message);
+    }
   };
 
   const handleGoogleSignIn = async () => {
-    // Your existing code for Google sign in
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
+      const userCredential = await signInWithCredential(auth, googleCredential);
+      console.log('User signed in with Google:', userCredential.user.uid);
+      navigation.navigate('MainMenu', { person: userCredential.user });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Sign in is in progress already');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Play Services not available or outdated');
+      } else {
+        console.log('Error signing in with Google:', error.message);
+        Alert.alert('Google Sign In Error', error.message);
+      }
+    }
   };
 
   const handleFacebookSignIn = async () => {
@@ -34,13 +67,11 @@ const SignIn = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
-      <HomeHeaderWhite navigation={navigation} header={''} />
       <View style={styles.form}>
         <View style={styles.welcomeContainer}>
-          <Text style={styles.text}>Welcome back</Text>
-          <Image source={HelloLogo} style={styles.helloLogo} />
+          <Text style={styles.textGreetings}>Hi!</Text>
         </View>
-
+        <Text style={styles.text}>Welcome</Text>
         <View style={styles.inputContainer}>
           <TextInput
             placeholder={'Email'}
@@ -58,11 +89,11 @@ const SignIn = ({ navigation }) => {
         </View>
 
         <TouchableOpacity onPress={handleSignIn} style={styles.appButtonContainer}>
-          <Text style={styles.appButtonText}>Sign in</Text>
+          <Text style={styles.appButtonText}>Log In</Text>
         </TouchableOpacity>
 
         <View style={styles.continueWith}>
-          <Text style={styles.continueWithText}>-or continue with</Text>
+          <Text style={styles.continueWithText}>-or continue with-</Text>
         </View>
 
         <View style={styles.socialButtonsContainer}>
@@ -79,8 +110,8 @@ const SignIn = ({ navigation }) => {
 
         <View style={styles.registerLink}>
           <Text style={{ color: "#929292" }}>Don't have an account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('SignUp', { name: 'Jane' })}>
-            <Text style={styles.registerButton}>create one</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.registerButton}>Create one</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -91,10 +122,10 @@ const SignIn = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff", // Page background remains white
+    backgroundColor: "#fff",
   },
   form: {
-    padding: 20,
+    padding: wp('5%'),
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -102,93 +133,102 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp('1%'),
+    alignSelf: 'flex-start',
   },
   helloLogo: {
-    width: 30,
-    height: 30,
-    marginLeft: 10,
+    width: wp('20%'),
+    height: wp('20%'),
+    marginLeft: wp('3%'),
+  },
+  textGreetings: {
+    fontSize: wp('15%'),
+    fontFamily: 'ChakraBold',
+    color: '#2E8B57',
+    alignSelf: 'flex-start',
   },
   text: {
-    fontSize: 24, // Increased font size for better visibility
-    fontFamily: 'RalewayBold',
-    color: '#2E8B57', // Environmental green
+    fontSize: wp('15%'),
+    fontFamily: 'ChakraBold',
+    color: '#2E8B57',
+    marginBottom: hp('3%'),
+    alignSelf: 'flex-start',
   },
   inputContainer: {
-    borderRadius: 10,
-    padding: 20,
-    width: '90%',
-    marginBottom: 20,
+    width: '100%',
+    marginBottom: hp('4%'),
+    marginTop: hp('5%'),
   },
   input: {
-    backgroundColor: '#f0f0f0', // Lighter grey background for the input fields
-    borderRadius: 10,
-    padding: 15,
-    marginVertical: 10,
-    fontFamily: 'sans-serif',
+    backgroundColor: '#f0f0f0',
+    borderRadius: wp('5%'),
+    padding: hp('2%'),
+    marginVertical: hp('1.5%'),
+    fontFamily: 'ChakraRegular',
     color: 'black',
-    fontSize: 16, // Increased font size for better visibility
+    fontSize: wp('4%'),
+    width: '100%',
   },
   appButtonContainer: {
-    backgroundColor: "#3CB371", // MediumSeaGreen
-    borderRadius: 10, // Matching input field border radius
-    width: '90%', // Matching input field width
-    padding: 15, // Matching input field padding
-    marginTop: 10,
+    backgroundColor: "#2ecc71",
+    borderRadius: wp('5%'),
+    width: wp('90%'),
+    padding: hp('2%'),
+    marginTop: hp('2%'),
     justifyContent: 'center',
     alignItems: 'center',
   },
   appButtonText: {
-    fontSize: 18, // Increased font size for better visibility
+    fontSize: wp('5%'),
     color: "#fff",
     alignSelf: "center",
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraBold',
   },
   registerLink: {
-    marginTop: 20,
+    marginTop: hp('3%'),
     color: '#afafaf',
-    fontSize: 15,
-    fontFamily: 'sans-serif',
+    fontSize: wp('4%'),
+    fontFamily: 'ChakraRegular',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   registerButton: {
     color: '#000',
-    fontFamily: 'RalewayBold',
-    marginLeft: 8,
-    fontSize: 16, // Increased font size for better visibility
+    fontFamily: 'ChakraBold',
+    marginLeft: wp('2%'),
+    fontSize: wp('4%'),
   },
   logo: {
-    width: 30,
-    height: 30,
+    width: wp('8%'),
+    height: wp('8%'),
   },
   continueWith: {
-    marginTop: 15,
-    marginBottom: 10,
+    marginTop: hp('2%'),
+    marginBottom: hp('1%'),
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   continueWithText: {
     color: '#929292',
-    fontSize: 16,
+    fontSize: wp('3.5%'),
     fontFamily: 'sans-serif',
   },
   socialButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: hp('2%'),
   },
   socialButton: {
-    backgroundColor: '#f0f0f0', // Faint grey background for the social buttons
-    borderRadius: 10, // Square shape with rounded corners
-    width: 50,
-    height: 50,
+    backgroundColor: '#f0f0f0',
+    borderRadius: wp('5%'),
+    width: wp('12%'),
+    height: wp('12%'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: wp('3%'),
   }
 });
 

@@ -1,222 +1,232 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import Checkbox from 'expo-checkbox';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import HomeHeaderWhite from '../components/HomeHeaderWhite';
 import { IconComponentProvider, Icon } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { RoundedCheckbox } from 'react-native-rounded-checkbox';
 
-const Diet = ({ navigation }) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
-  const [carbonFootprint, setCarbonFootprint] = useState(0);
+// Import images statically
+import veganImage from '../assets/images/vegan.png';
+import vegetarianImage from '../assets/images/vegeterian.png';
+import lessMeatImage from '../assets/images/meat.png';
+import OmnivoreImage from '../assets/images/noodles.png';
 
-  const handleOptionChange = (option, isChecked) => {
-    if (isChecked) {
-      setSelectedOptions([...selectedOptions, option]);
+const footprintValues = {
+  Vegan: 0.1,
+  Vegetarian: 0.3,
+  Meat: 0.5,
+  Omnivore: 1.0,
+};
+
+const totalAnnualFootprint = 1.74; // Total carbon footprint for the country
+const maxPercentagePerPage = 20; // Maximum percentage contribution per page
+
+const Diet = ({ navigation, route }) => {
+  const { footprintPercentage } = route.params || { footprintPercentage: 0 }; // Default to 0 if not provided
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [footprint, setFootprint] = useState(footprintPercentage * totalAnnualFootprint / 100);
+
+  const handleOptionChange = (option) => {
+    const optionValue = footprintValues[option] * totalAnnualFootprint;
+    let newFootprint = footprint;
+
+    if (selectedOption === option) {
+      setSelectedOption(null);
+      newFootprint -= optionValue;
     } else {
-      setSelectedOptions(selectedOptions.filter(item => item !== option));
+      const previousOptionValue = selectedOption ? footprintValues[selectedOption] * totalAnnualFootprint : 0;
+      newFootprint = footprint - previousOptionValue + optionValue;
+      setSelectedOption(option);
+    }
+
+    if ((newFootprint / totalAnnualFootprint) * 100 > maxPercentagePerPage) {
+      newFootprint = (maxPercentagePerPage / 100) * totalAnnualFootprint;
+    }
+
+    setFootprint(newFootprint);
+  };
+
+  const handleProceed = () => {
+    navigation.navigate('Summary', { footprintPercentage: (footprint / totalAnnualFootprint) * 100 }); // Pass the updated footprintPercentage
+  };
+
+  const calculateFill = () => (footprint / totalAnnualFootprint) * 100;
+
+  const getImageSource = (option) => {
+    switch (option) {
+      case 'Vegan':
+        return veganImage;
+      case 'Vegetarian':
+        return vegetarianImage;
+      case 'Meat':
+        return lessMeatImage;
+      case 'Omnivore':
+        return OmnivoreImage;
+      default:
+        return null;
     }
   };
 
-  useEffect(() => {
-    // Calculate carbon footprint based on selected options
-    const footprintValues = {
-      'Vegan': 1.5,
-      'Vegeterian': 2.0,
-      'lessMeat': 3.0,
-      'everything': 4.0,
-    };
-
-    let totalFootprint = selectedOptions.reduce((total, option) => total + footprintValues[option], 0);
-    setCarbonFootprint(totalFootprint);
-  }, [selectedOptions]);
-
-  const handleProceed = () => {
-    navigation.navigate('Diet'); // Replace 'Diet' with your actual next screen name
-  };
-
   return (
-    <ImageBackground source={require('../assets/images/food.jpg')} style={styles.backgroundImage}>
+    <ImageBackground source={require('../assets/images/diet.jpg')} style={styles.backgroundImage}>
       <View style={styles.overlay}>
-        <HomeHeaderWhite navigation={navigation} header={''} />
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.pageTitle}>CO₂ footprint assessment</Text>
-          
+        <View style={styles.contentContainer}>
+      
           {/* Circular Progress */}
           <View style={styles.circularProgressContainer}>
-            <Text style={styles.circularProgressTitle}>Tons in CO₂</Text>
+            <Text style={styles.circularProgressTitle}>Percentage Contribution</Text>
             <AnimatedCircularProgress
-              size={130}
-              width={18}
-              fill={(carbonFootprint / 10) * 100} // Assuming 10 is the max footprint value
+              size={wp('30%')}
+              width={wp('1%')}
+              fill={calculateFill()}
               tintColor="#00e0ff"
-              backgroundColor="#3d5875"
+              backgroundColor="#fff"
             >
-              {
-                () => (
-                  <Text style={styles.circularProgressText}>
-                    {carbonFootprint.toFixed(1)} T
-                  </Text>
-                )
-              }
+              {() => (
+                <Text style={styles.circularProgressText}>
+                  {calculateFill().toFixed(2)}%
+                </Text>
+              )}
             </AnimatedCircularProgress>
           </View>
 
           {/* Question Chat Bubble */}
-          <View style={[styles.chatBubble, styles.leftChatBubble]}>
-            <Text style={styles.chatText}>Which best describes your diet?</Text>
+          <View style={[styles.chatBubble, styles.leftChatBubble, selectedOption === null && styles.selectedChatBubble]}>
+            <Text style={styles.chatText}>Which best describes your feeding habit?</Text>
           </View>
           
           {/* Reply Chat Bubble */}
           <View style={[styles.chatBubble, styles.rightChatBubble]}>
             <Text style={styles.chatText}>Select one option</Text>
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                style={styles.checkbox}
-                value={selectedOptions.includes('Vegan')}
-                onValueChange={(isChecked) => handleOptionChange('Vegan', isChecked)}
-              />
-              <Image source={require('../assets/images/vegan.png')} style={styles.checkboxIcon} />
-              <Text style={styles.checkboxText}>Vegan</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                style={styles.checkbox}
-                value={selectedOptions.includes('Vegeterian')}
-                onValueChange={(isChecked) => handleOptionChange('Vegeterian', isChecked)}
-              />
-              <Image source={require('../assets/images/vegeterian.png')} style={styles.checkboxIcon} />
-              <Text style={styles.checkboxText}>Vegeterian</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                style={styles.checkbox}
-                value={selectedOptions.includes('lessMeat')}
-                onValueChange={(isChecked) => handleOptionChange('lessMeat', isChecked)}
-              />
-              <Image source={require('../assets/images/meat.png')} style={styles.checkboxIcon} />
-              <Text style={styles.checkboxText}>I try to eat less meat</Text>
-            </View>
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                style={styles.checkbox}
-                value={selectedOptions.includes('everything')}
-                onValueChange={(isChecked) => handleOptionChange('everything', isChecked)}
-              />
-              <Image source={require('../assets/images/noodles.png')} style={styles.checkboxIcon} />
-              <Text style={styles.checkboxText}>I eat everything</Text>
-            </View>
+            {Object.keys(footprintValues).map((option) => (
+              <TouchableOpacity
+                key={option}
+                style={styles.checkboxContainer}
+                onPress={() => handleOptionChange(option)}
+                disabled={selectedOption !== null && selectedOption !== option}
+              >
+                <RoundedCheckbox
+                  size={wp('7.5%')}
+                  isChecked={selectedOption === option}
+                  onPress={() => handleOptionChange(option)}
+                  text=''
+                  borderColor="#fff"
+                  fillColor="#2ecc71"
+                  uncheckedColor="#fff"
+                  active={selectedOption === option} // Pass active prop based on selection
+                />
+                <Image source={getImageSource(option)} style={styles.checkboxIcon} />
+                <Text style={styles.checkboxText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
 
           {/* Proceed Button */}
-          <TouchableOpacity style={styles.proceedBtn} onPress={handleProceed}>
-            <Text style={styles.proceedBtnText}>Continue</Text>
-            <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-              <Icon name="chevron-right-circle-outline" size={30} color="#fff" style={styles.proceedBtnIcon} />
-            </IconComponentProvider>
-          </TouchableOpacity>
-        </ScrollView>
+        </View>
+        <TouchableOpacity style={styles.proceedBtn} onPress={handleProceed}>
+          <Text style={styles.proceedBtnText}>Continue</Text>
+        </TouchableOpacity>
       </View>
     </ImageBackground>
   );
 };
 
+
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
+    backgroundColor: "#000A13",
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Black overlay with 50% opacity
+    justifyContent: 'space-between',
+    padding: wp('5%'),
   },
   contentContainer: {
-    padding: 20,
-    paddingTop: 20, // Adjust to make space for the header/title
+    flex: 1,
+    justifyContent: 'center',
   },
-  pageTitle: {
-    fontSize: 30,
+  categoryBanner: {
+    width: wp('43%'),
+    height: hp('18%'),
+    resizeMode: 'cover',
+    alignSelf: 'center',
+    marginBottom: hp('2%'),
+  },
+  circularProgressContainer: {
+    alignItems: 'center',
+    marginBottom: hp('5%'),
+  },
+  circularProgressTitle: {
+    fontSize: wp('5.5%'),
+    color: '#ffff',
+    fontFamily: 'ChakraBold',
+    marginBottom: hp('2.5%'),
+  },
+  circularProgressText: {
+    fontSize: wp('6%'),
     color: '#fff',
-    marginBottom: 20,
-    textAlign: 'center',
-    fontFamily: 'sans-serif',
+    fontWeight: 'bold',
+    fontFamily: 'ChakraBold',
   },
   chatBubble: {
     maxWidth: '80%',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
+    padding: wp('4%'),
+    marginBottom: hp('2%'),
+    borderRadius: wp('4%'),
   },
   leftChatBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#00e0ff', // Left bubble color
-    padding: 20,
+    backgroundColor: '#2ecc71',
+    marginTop: hp('-2%'),
+  },
+  selectedChatBubble: {
+    backgroundColor: '#2ecc71',
   },
   rightChatBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#2ecc71', 
-    padding: 20, // Right bubble color
+    backgroundColor: '#2ecc71',
   },
   chatText: {
-    fontSize: 23,
-    color: '#fff', // Text color
-    fontFamily: 'sans-serif',
-    marginBottom: 10,
+    fontSize: wp('4.5%'),
+    color: '#fff',
+    fontFamily: 'ChakraRegular',
+    marginBottom: wp('1%'),
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-    paddingVertical: 8, // Vertical padding for checkbox sections
-    paddingHorizontal: 12, // Horizontal padding for checkbox sections
+    marginBottom: hp('1.25%'),
   },
   checkboxText: {
-    marginLeft: 10,
-    fontSize: 23,
-    color: '#fff', // Text color
-    fontFamily: 'sans-serif',
+    fontSize: wp('4.5%'),
+    color: '#fff',
+    fontFamily: 'ChakraRegular',
+    marginLeft: wp('3%'),
   },
   checkboxIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 10,
-  },
-  checkbox: {
-    marginRight: 8, // Adjust spacing between checkbox and text
+    width: wp('6%'),
+    height: wp('6%'),
+    marginRight: wp('3%'),
   },
   proceedBtn: {
+    justifyContent: "center",
+    borderRadius: wp('5%'),
+    width: wp('95%'),
+    height: hp('8%'),
+    backgroundColor: "#2ecc71",
+    alignItems: "center",
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#2ecc71', // MediumSeaGreen
-    marginTop: 20,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    alignSelf: 'center',
   },
   proceedBtnText: {
-    fontSize: 20,
+    fontSize: wp('5%'),
     color: '#fff',
-    fontFamily: 'sans-serif',
-  },
-  proceedBtnIcon: {
-    marginLeft: 10,
-  },
-  circularProgressContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  circularProgressTitle: {
-    fontSize: 20,
-    color: '#2ecc71',
-    fontFamily: 'sans-serif',
-    marginBottom: 10,
-  },
-  circularProgressText: {
-    fontSize: 28,
-    color: '#fff',
-    fontWeight: 'bold',
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraBold',
+    marginRight: wp('2%'),
   },
 });
 

@@ -1,6 +1,6 @@
-// screens/Buy.js
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import HomeHeaderWhite from "../components/HomeHeaderWhite";
 
 const Buy = ({ navigation }) => {
@@ -24,11 +24,10 @@ const Buy = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../assets/images/background.jpg')} // Replace with your background image
+      source={require('../assets/images/background2.png')} // Replace with your background image
       style={styles.background}
     >
       <View style={styles.overlay} />
-      <HomeHeaderWhite navigation={navigation} header={'Buy Page'} />
       <View style={styles.container}>
         <Text style={styles.pageTitle}>
           1.74 tonnes of{' '}
@@ -55,79 +54,70 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: 'cover',
+    backgroundColor: "#000A13",
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Black overlay with 50% opacity
-  },
+
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: wp('3%'),
   },
   pageTitle: {
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: wp('10%'),
     color: '#fff',
-    marginBottom: 20,
+    marginaTop: hp('2.5%'),
     textAlign: 'center',
-    fontFamily: 'sans-serif',
+    fontFamily: "ChakraBold",
   },
   co2Text: {
-    fontSize: 35, // Larger size for "CO₂"
+    fontSize: wp('8.75%'), // Larger size for "CO₂"
     color: '#2ecc71', // Same color as the button
   },
   card: {
-    backgroundColor: 'rgba(18, 18, 18, 0.8)', // Darker translucent background
-    padding: 30,
-    borderRadius: 28,
+    backgroundColor: '#000A13', // Darker translucent background
+    padding: wp('5%'),
+    borderRadius: wp('7%'),
     width: '100%',
-    maxWidth: 350,
-    marginVertical: 15,
+    maxWidth: wp('112.5%'),
+    marginVertical: hp('2%'),
     position: 'relative',
-    elevation: 5, // Add elevation for Android
-    shadowColor: '#000', // Add shadow for iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    elevation: 1, // Add elevation for Android
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: hp('2.5%'),
   },
   logo: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 12,
-    marginRight: 15,
+    width: wp('12.5%'),
+    height: wp('12.5%'),
+    backgroundColor: '#000A13',
+    borderRadius: wp('3%'),
+    marginRight: wp('3.75%'),
   },
   cardNumber: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    fontFamily: 'sans-serif',
+    fontSize: wp('7.5%'),
+    fontFamily: "ChakraBold",
     color: '#fff',
   },
   cardText: {
-    fontSize: 16,
+    fontSize: wp('4.25%'),
     color: '#fff', // White text color for better visibility
-    fontFamily: 'sans-serif',
+    fontFamily: "ChakraRegular",
   },
   continueButton: {
-    backgroundColor: '#2ecc71', 
-    borderRadius: 10,
-    width: '90%',
-    padding: 15,
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    borderRadius: wp('5%'),
+    width: wp('80%'),
+    height: hp('8%'),
+    backgroundColor: "#2ecc71",
+    alignItems: "center",
   },
   continueButtonText: {
-    fontSize: 18,
+    fontSize: wp('5%'),
     color: "#fff",
-    fontFamily: 'sans-serif',
+    fontFamily: "ChakraBold",
   },
 });
 

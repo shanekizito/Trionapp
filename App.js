@@ -3,23 +3,28 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from "./screens/Home";
-import Details from "./screens/Details";
+//import Details from "./screens/Details";
 import Card from "./screens/Card";
 import Profile from "./screens/Profile";
+import Summary from "./screens/Summary";
 import Ticket from "./screens/Ticket";
 import PhoneNumberAuth from './screens/PhoneNumberAuth';
+import OTP from './screens/Otp';
 import SingleTicket from './screens/SingleTicket';
 import Venue from "./screens/Venue";
 import Preferences from "./screens/Preferences";
 import Notification from './screens/Notification';
 import SignUp from './screens/SignUp';
 import Diet from './screens/Diet';
-import Map from './screens/Map';
 import Buy from './screens/Buy';
 import Deposit from './screens/Deposit';
+import PaymentPage from './screens/Payment';
 import Verify from './screens/Verify';
 import Booked from './screens/Booked';
 import SignIn from './screens/SignIn';
+import Car from './screens/Car';
+import MainMenu from './screens/MainMenu';
+import PaymentMethod from './screens/PaymentMethod';
 import Onboarding from './screens/Onboarding';
 import { useFonts } from 'expo-font';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -80,16 +85,21 @@ const App = () => {
         initialRouteName="Onboarding"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Payment' component={PaymentPage} />
+        <Stack.Screen name='Summary' component={Summary} />
+        <Stack.Screen name='OTP' component={OTP} />
+        <Stack.Screen name='Car' component={Car} />
+        <Stack.Screen name='PaymentMethod' component={PaymentMethod} />
+        <Stack.Screen name='Profile' component={Profile} />
         <Stack.Screen name='Diet' component={Diet} />
         <Stack.Screen name='Venue' component={Venue} />
+       <Stack.Screen name='MainMenu' component={MainMenu} />
         <Stack.Screen name='Buy' component={Buy} />
         <Stack.Screen name='SignUp' component={SignUp} />
         <Stack.Screen name='Card' component={Card} />
         <Stack.Screen name='Verify' component={Verify} />
         <Stack.Screen name='PhoneNumberAuth' component={PhoneNumberAuth} />
-        <Stack.Screen name='Details' component={Details} />
         <Stack.Screen name='SignIn' component={SignIn} />
-        <Stack.Screen name='Map' component={Map} />
         <Stack.Screen name='Onboarding' component={Onboarding} />
         <Stack.Screen name='Deposit' component={Deposit} />
         <Stack.Screen name='Preferences' component={Preferences} />
@@ -101,7 +111,13 @@ const App = () => {
     RalewayRegular: require('./assets/fonts/Raleway-Regular.ttf'),
     RalewayBold: require('./assets/fonts/Raleway-Bold.ttf'),
     UbuntuBold: require('./assets/fonts/Ubuntu-Bold.ttf'),
-    Ubuntu: require('./assets/fonts/Ubuntu-Light.ttf')
+    Ubuntu: require('./assets/fonts/Ubuntu-Light.ttf'),
+    ChakraBold:require('./assets/fonts/Blinker-Bold.ttf'),
+    ChakraRegular:require('./assets/fonts/Blinker-Regular.ttf'),
+    BlinkerLight:require('./assets/fonts/Blinker-Light.ttf'),
+    ChakraRegular:require('./assets/fonts/ChakraPetch-Regular.ttf'),
+    ChakraBold:require('./assets/fonts/ChakraPetch-Bold.ttf'),
+
   });
 
   if (!loaded) {

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "596897853249",
+    "firebase_url": "https://onthego-52662-default-rtdb.firebaseio.com",
+    "project_id": "onthego-52662",
+    "storage_bucket": "onthego-52662.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596897853249:android:1cf7a9f5e4501c01f47bc0",
+        "android_client_info": {
+          "package_name": "on.the.go"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596897853249-it7kpj5pijqo86bf5ac6haahqdp0h85m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "on.the.go",
+            "certificate_hash": "e128a65cda3542d3b34740ad407e862865277d53"
+          }
+        },
+        {
+          "client_id": "596897853249-4qnna0rccca63m6pcumae75jh8mmulbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3HyyvEwRCadgB0r8eIhOSL6uNNomjYBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596897853249-4qnna0rccca63m6pcumae75jh8mmulbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

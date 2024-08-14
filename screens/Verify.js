@@ -5,13 +5,12 @@ import OTPInput from "./OTPInput";
 import { ButtonContainer, ButtonText } from "./styles";
 import React, {  useState, useEffect,useRef } from "react";
 import { Text, View, StyleSheet, Image, Button, Keyboard , Alert, ActivityIndicator,Pressable ,TouchableOpacity } from 'react-native';
-import * as FirebaseRecaptcha from 'expo-firebase-recaptcha';
 import { initializeApp, getApp } from 'firebase/app';
 import { getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { COLORS, NFTData ,assets} from "../constants";
 import { getFirestore } from 'firebase/firestore';
 import { HomeHeaderWhite} from "../components";
-
+import { firebaseConfig } from '../config/firebase';
 
 // Add your Firebase >=9.x.x config here
 // https://firebase.google.com/docs/web/setup
@@ -32,7 +31,7 @@ export default function Verify({ route, navigation }) {
   const [verificationCode, setVerificationCode] = useState(otpCode);
   const [confirmError, setConfirmError] = React.useState(null);
   const [confirmInProgress, setConfirmInProgress] =useState(false);
-  const isConfigValid = !!FIREBASE_CONFIG.apiKey;
+  const isConfigValid = !!firebaseConfig .apiKey;
   const [userData,setUserData] = useState({});
 
    

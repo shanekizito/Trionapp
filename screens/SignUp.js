@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { TextInput, Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Image, Alert } from 'react-native';
-import { FocusedStatusBar, HomeHeaderWhite } from "../components";
+import { FocusedStatusBar } from "../components";
 import { COLORS } from "../constants";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from "firebase/firestore"; 
 import { auth, database } from '../config/firebase';
 
-// Import hello image
-import HelloLogo from '../assets/images/hello.png';
 import EyeIcon from '../assets/images/eye.png'; // Import eye icon
 
 const SignUp = ({ navigation }) => {
@@ -29,15 +28,14 @@ const SignUp = ({ navigation }) => {
   };
 
   const assessPasswordStrength = (password) => {
-    // Assess password strength based on criteria
     if (password.length === 0) {
-      return { label: "", color: "#ffffff" }; // Empty strength
+      return { label: "", color: "#ffffff" };
     } else if (password.length < 6) {
-      return { label: "Weak", color: "#FF6347" }; // Weak password
+      return { label: "Weak", color: "#FF6347" };
     } else if (password.length < 10) {
-      return { label: "Moderate", color: "#FFA500" }; // Moderate password
+      return { label: "Moderate", color: "#FFA500" };
     } else {
-      return { label: "Strong", color: "#32CD32" }; // Strong password
+      return { label: "Strong", color: "#32CD32" };
     }
   };
 
@@ -53,19 +51,16 @@ const SignUp = ({ navigation }) => {
     }
 
     try {
-      // Create user account with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log('User account created with UID:', userCredential.user.uid);
 
-      // Save user details to Firestore
-      await database.collection("users").doc(userCredential.user.uid).set({
+      await setDoc(doc(database, "users", userCredential.user.uid), {
         username: `${firstName} ${lastName}`,
         email,
         phoneNumber
       });
 
-      // Navigate to the next screen
-      navigation.navigate('PhoneNumberAuth', { user: { username: `${firstName} ${lastName}`, email, phoneNumber } });
+      navigation.navigate('MainMenu', { firstname: `${firstName}`,secondname: `${lastName}`, email, phoneNumber });
     } catch (error) {
       console.log('Error creating user account:', error.message);
       Alert.alert("Signup Error", error.message);
@@ -79,9 +74,16 @@ const SignUp = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <FocusedStatusBar backgroundColor={COLORS.primary} />
-      <HomeHeaderWhite navigation={navigation} header={'SIGN UP'} />
       <View style={styles.form}>
-        <Text style={styles.text}>Join us now</Text>
+    
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../assets/images/mainlogo.png")}
+            style={styles.logo}
+          />
+        </View>
+        <Text style={styles.description}>TRION ENERGY</Text>
+        <View style={styles.detailContainer}></View>
 
         <View style={styles.inputContainer}>
           <TextInput
@@ -139,8 +141,8 @@ const SignUp = ({ navigation }) => {
           </View>
         </View>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('Deposit')} style={styles.appButtonContainer}>
-          <Text style={styles.appButtonText}>Next</Text>
+        <TouchableOpacity onPress={handleSignUp} style={styles.appButtonContainer}>
+          <Text style={styles.appButtonText}>Create account</Text>
         </TouchableOpacity>
 
         <View style={styles.registerLink}>
@@ -157,7 +159,7 @@ const SignUp = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff", // Page background remains white
+    backgroundColor: "#fff",
   },
   form: {
     padding: 20,
@@ -165,23 +167,54 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  logoContainer: {
+   
+  },
+  logo: {
+    width: 90, // Adjust the size as needed
+    height: 100, // Adjust the size as needed
+    resizeMode: 'contain',
+  },
   text: {
-    fontSize: 24, // Increased font size for better visibility
-    fontFamily: 'RalewayBold',
-    marginBottom: 12,
-    color: '#2E8B57', // Environmental green
+    fontSize: 40,
+    fontFamily: 'ChakraBold',
+    marginTop: 20,
+    marginBottom:15,
+    color: '#2E8B57',
+  },
+  description: {
+    fontFamily: "ChakraBold",
+    fontSize: 30,
+    lineHeight: 35,
+    color: '#2E8B57',
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  detailContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+  detail: {
+    fontFamily: "ChakraBold",
+    fontSize: 25,
+    lineHeight: 35,
+    color: '#000',
+    textAlign: "center",
+    marginTop: 10,
+    marginBottom: 70,
   },
   inputContainer: {
     width: '100%',
   },
   input: {
-    backgroundColor: '#f0f0f0', // Lighter grey background for the input fields
+    backgroundColor: '#f0f0f0',
     borderRadius: 10,
     padding: 15,
     marginVertical: 10,
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraRegular',
     color: 'black',
-    fontSize: 16, // Increased font size for better visibility
+    fontSize: 16,
   },
   passwordInputContainer: {
     flexDirection: 'row',
@@ -195,7 +228,7 @@ const styles = StyleSheet.create({
   passwordInput: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraRegular',
     color: 'black',
   },
   eyeIconContainer: {
@@ -221,34 +254,34 @@ const styles = StyleSheet.create({
     fontFamily: 'sans-serif',
   },
   appButtonContainer: {
-    backgroundColor: "#3CB371", // MediumSeaGreen
-    borderRadius: 10, // Matching input field border radius
-    width: '90%', // Matching input field width
-    padding: 15, // Matching input field padding
+    backgroundColor: "#2ecc71",
+    borderRadius: 10,
+    width: '90%',
+    padding: 15,
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   appButtonText: {
-    fontSize: 18, // Increased font size for better visibility
+    fontSize: 20,
     color: "#fff",
     alignSelf: "center",
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraBold',
   },
   registerLink: {
     marginTop: 20,
     color: '#afafaf',
     fontSize: 15,
-    fontFamily: 'sans-serif',
+    fontFamily: 'ChakraRegular',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   registerButton: {
     color: '#000',
-    fontFamily: 'RalewayBold',
+    fontFamily: 'ChakraBold',
     marginLeft: 8,
-    fontSize: 16, // Increased font size for better visibility
+    fontSize: 20,
   },
 });
 

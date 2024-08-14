@@ -1,125 +1,124 @@
-import React from "react";
+import React, { useRef, useCallback, useMemo } from "react";
 import {
   SafeAreaView,
   View,
-  ImageBackground,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { IconComponentProvider, Icon } from "@react-native-material/core";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { assets } from "../constants";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const Onboarding = ({ navigation }) => {
-  const GetStartedButton = ({ title }) => (
+
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['35%']);
+
+  const GetStartedButton = () => (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("SignIn");
+        navigation.navigate("Card");
       }}
       style={styles.getStartedBtn}
     >
       <Text style={styles.getStartedButtonText}>Let's get started</Text>
-      <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-        <Icon name="chevron-right-circle-outline" size={30} color="#fff" />
-      </IconComponentProvider>
     </TouchableOpacity>
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground
-         source={require("../assets/images/background.jpg")}
-        style={styles.imageBackground}
-        resizeMode="cover"
-      >
-        {/* Overlay View */}
-        <View style={styles.overlay} />
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../assets/images/mainlogo.png")}
-            style={styles.logo}
-          />
-        </View>
-        <Text style={styles.description}>TRION ENERGY</Text>
-        <View style={styles.detailContainer}>
-          <Text style={styles.detail}>
-            Join the Journey to a Carbon-Free World
+  return (
+    <ImageBackground
+     style={styles.container}
+     source={require("../assets/images/haze.png")}>
+      <Text style={styles.description}>TRION ENERGY</Text>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require("../assets/images/haze.png")}
+          style={styles.logo}
+        />
+      </View>
+      <View style={styles.textContainer}>
+        <View style={styles.minidescriptionContainer}>
+          <Text style={styles.minidescription}>
+            Reduce Carbon Footprint
+          </Text>
+          <Text style={[styles.minidescription, { color: "#7ADB78" }]}>
+            Earn Carbon Credits
+          </Text>
+          <Text style={[styles.minidescription, { color: "#7ADB78" }]}>
+            Make An Impactrrr
           </Text>
         </View>
-        <GetStartedButton />
-      </ImageBackground>
-    </SafeAreaView>
+      </View>
+      <GetStartedButton />/
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  imageBackground: {
-    flex: 1,
-    justifyContent: "center",
+    backgroundColor: "#000A13",
     alignItems: "center",
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black overlay
+    justifyContent: "flex-start",
   },
   logoContainer: {
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 60,
+    marginTop: hp('3%'),
+    marginBottom: hp('5%'),
+    backgroundColor: "#7ADB78",
+    borderRadius: wp('21.5%'),
+    padding: wp('3.75%'),
+    paddingVertical: wp('7.75%'),
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: wp('45%'),
+    height: wp('45%'),
   },
   description: {
-    fontFamily: "Ubuntu",
-    fontWeight: "bold",
-    fontSize: 34,
-    lineHeight: 35,
+    fontFamily: "ChakraBold",
+    fontSize: wp('8%'),
+    lineHeight: wp('8.75%'),
     color: "#fff",
     textAlign: "center",
-    marginTop: 10,
-    marginBottom: 25,
+    marginTop: hp('10%'),
+    marginBottom: hp('5%'),
+    width: wp('80%'),
   },
-  detailContainer: {
-    width: "100%",
+  textContainer: {
+    width: wp('80%'),
+  },
+  minidescriptionContainer: {
     alignItems: "center",
+    marginVertical: hp('2%'),
   },
-  detail: {
-    fontFamily: "Ubuntu",
-    fontSize: 25,
-    lineHeight: 35,
+  minidescription: {
+    fontFamily: "ChakraRegular",
+    fontSize: wp('6%'),
+    lineHeight: wp('6%'),
     color: "#fff",
-    textAlign: "center",
-    marginTop: 10,
-    marginBottom: 70,
+    textAlign: "left",
+    marginVertical: hp('1.5%'),
   },
   getStartedBtn: {
-    elevation: 8,
-    backgroundColor: "#3CB371", // MediumSeaGreen
-    flexDirection: "row",
+    backgroundColor: "#2ecc71",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    borderRadius: 15,
-    width: 320,
-    height: 65,
-    paddingVertical: 9,
-    paddingHorizontal: 5,
+    borderRadius: wp('5%'),
+    width: wp('80%'),
+    height: hp('8%'),
+    marginTop: hp('5%'),
   },
   getStartedButtonText: {
-    fontSize: 17,
-    fontFamily: "RalewayBold",
+    fontSize: wp('6%'),
+    fontFamily: "ChakraRegular",
+    fontWeight: "600",
     color: "#fff",
-    marginRight: 10,
-    marginLeft: 10,
   },
 });
 

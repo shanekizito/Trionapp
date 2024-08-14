@@ -18,8 +18,10 @@ export default{
       "sourceExts": ["cjs"] 
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/a8f6d266-f2fd-4045-80e4-c382440e0e2d"
     },
+    "runtimeVersion": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -31,10 +33,18 @@ export default{
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF",
-       
+        "backgroundColor": "#FFFFFF", 
       },
-      "package": "on.the.go"
+      "package": "on.the.go",
+      "googleServicesFile": "./google-services.json",
+      "env": {
+        "ANDROID_HOME":'/Users/shaneyoung/Library/Android/sdk',
+       "sdk.dir":'/Users/shaneyoung/Library/Android/sdk',
+        "ndk.dir":'/Users/shaneyoung/Library/Android/sdk/ndk/23.1.7779620',
+
+      }
+      
+
     },
     "web": {
       "favicon": "./assets/icon.png"
@@ -57,15 +67,23 @@ export default{
       },
     
     "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-google-signin/google-signin",
       [
         "expo-build-properties",
         {
+          "android": {
+            "compileSdkVersion":34,
+            "targetSdkVersion":34,
+            "buildToolsVersion":'34.0.0'
+          },
           "ios": {
             "useFrameworks": "static"
           }
         }
       ]
-    ]
+    ],
   }
 }
 

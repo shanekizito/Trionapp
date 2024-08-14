@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   iconStyle: {
     fontSize: 40,
     marginLeft: 0,
-    color: '#ffff', // MediumSeaGreen
+    color: '#000', // MediumSeaGreen
   },
 });
 

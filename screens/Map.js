@@ -245,7 +245,7 @@ useEffect(() => {
     
     
     
-    <BottomSheetModal
+        <BottomSheetModal
             ref={bottomSheetModalRefVenue}
             index={1}
             snapPoints={snapPoints}

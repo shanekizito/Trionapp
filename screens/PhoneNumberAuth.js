@@ -5,7 +5,7 @@ import Home from './Home';
 import { ButtonContainer, ButtonText } from "./styles";
 import React, {  useState, useEffect,useRef } from "react";
 import { Text, View, StyleSheet, TextInput,Image, Button, Keyboard , Alert, ActivityIndicator,Pressable ,TouchableOpacity ,SafeAreaView} from 'react-native';
-import * as FirebaseRecaptcha from 'expo-firebase-recaptcha';
+
 import { getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import OTPInput from "./OTPInput";
 import { firebaseConfig } from '../config/firebase';
@@ -54,7 +54,7 @@ const PhoneNumberAuth = ({navigation,route}) => {
   const collectionRef = collection(database, 'users');
 
 
-
+console.log(route.params)
   
   useEffect(() => {
     setUserData(route.params.user)
@@ -89,11 +89,7 @@ const PhoneNumberAuth = ({navigation,route}) => {
       <Text style={styles.text}>OTP Verification</Text>
      
       
-        <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
-        ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
-        attemptInvisibleVerification={true }
-      />
+     
        {!codeSent ? (
        <View style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
        <Text style={styles.info}>We will send a one time password on this mobile number {phoneNumber}</Text>
